@@ -5,7 +5,7 @@ annotate RiskService.Risks with {
 	prio        @title: 'Priority';
 	descr       @title: 'Description';   
 	miti        @title: 'Mitigation'; 
-	//bp          @title: 'Business Partner';   
+	bp          @title: 'Business Partner';   
 	impact      @title: 'Impact'; 
 }
 
@@ -32,7 +32,7 @@ annotate RiskService.Risks with @(
 		LineItem: [
 			{Value: title},
 			{Value: miti_ID},
-			// {Value: bp_BusinessPartner},
+			{Value: bp_BusinessPartner},
 			{
 				Value: prio,
 				Criticality: criticality 
@@ -54,7 +54,7 @@ annotate RiskService.Risks with @(
 					Value: prio,
 					Criticality: criticality
 				},
-				// {Value: bp_BusinessPartner},
+				{Value: bp_BusinessPartner},
 				{
 					Value: impact,
 					Criticality: criticality
@@ -87,37 +87,37 @@ annotate RiskService.Risks with {
 		},
 		UI.MultiLineText: IsActiveEntity
 	);
-	// bp @(	
-	// 	Common: {
-	// 		Text: bp.LastName  , TextArrangement: #TextOnly,
-	// 		ValueList: {
-	// 			Label: 'Business Partners',
-	// 			CollectionPath: 'BusinessPartners',
-	// 			Parameters: [
-	// 				{ $Type: 'Common.ValueListParameterInOut', 
-	// 					LocalDataProperty: bp_BusinessPartner, 
-	// 					ValueListProperty: 'BusinessPartner' 
-	// 				},
-	// 				{ $Type: 'Common.ValueListParameterDisplayOnly', 
-	// 					ValueListProperty: 'LastName' 
-	// 				},
-	// 				{ $Type: 'Common.ValueListParameterDisplayOnly', 
-	// 					ValueListProperty: 'FirstName' 
-	// 				}      					                                   
-	// 			]
-	// 		}
-	// 	}
-	// )	
+	bp @(	
+		Common: {
+			Text: bp.LastName  , TextArrangement: #TextOnly,
+			ValueList: {
+				Label: 'Business Partners',
+				CollectionPath: 'BusinessPartners',
+				Parameters: [
+					{ $Type: 'Common.ValueListParameterInOut', 
+						LocalDataProperty: bp_BusinessPartner, 
+						ValueListProperty: 'BusinessPartner' 
+					},
+					{ $Type: 'Common.ValueListParameterDisplayOnly', 
+						ValueListProperty: 'LastName' 
+					},
+					{ $Type: 'Common.ValueListParameterDisplayOnly', 
+						ValueListProperty: 'FirstName' 
+					}      					                                   
+				]
+			}
+		}
+	)	
 }
 
 
-//   annotate RiskService.BusinessPartners with {
-//     BusinessPartner @(
-//       UI.Hidden,
-//       Common: {
-//         Text: LastName
-//       }
-//     );   
-//     LastName    @title: 'Last Name';  
-//     FirstName   @title: 'First Name';   
-//   }
+  annotate RiskService.BusinessPartners with {
+    BusinessPartner @(
+      UI.Hidden,
+      Common: {
+        Text: LastName
+      }
+    );   
+    LastName    @title: 'Last Name';  
+    FirstName   @title: 'First Name';   
+  }
