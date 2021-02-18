@@ -1,5 +1,5 @@
 {
-    "welcomeFile": "/app/launchpage.html",
+    "welcomeFile": "/cp.portal",
     "authenticationMethod": "route",
     "sessionTimeout": 30,
     "logout": {
@@ -7,12 +7,6 @@
         "logoutPage": "/"
     },
     "routes": [
-        {
-            "source": "^/app/(.*)$",
-            "target": "$1",
-            "localDir": "resources",
-            "authenticationType": "xsuaa"
-        },
         {
             "source": "^/service/(.*)$",
             "destination": "srv-api",

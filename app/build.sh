@@ -1,9 +1,12 @@
 #!/bin/bash
+
 set -e
+
 cd "$(dirname "$0")"
+
 rm -rf dist
 mkdir dist
-cp launchpage.html dist
+
 for APP in *; do
     if [ -f "$APP/webapp/manifest.json" ]; then
         echo "Build $APP"
@@ -21,7 +24,13 @@ metadata:
   name: $APP
 EOF
         fi
-        npx ui5 build --dest "../dist/$APP/webapp"
-        cd ..
+        npx ui5 build --dest "../dist/$APP"
+        cd "../dist/$APP"
+        if which >/dev/null 2>/dev/null zip; then
+            zip -r -o manifest-bundle.zip manifest.json i18n
+        else
+            npx bestzip manifest-bundle.zip manifest.json i18n
+        fi
+        cd "../.."
     fi
 done

@@ -1,0 +1,20 @@
+applications:
+- name: cpapp-srv
+  disk_quota: 1G
+  env:
+    DEPLOY_ATTRIBUTES: |-
+      {
+        "app-content-digest" : "0E381FD5B63311EBDE078F76593FF3F7"
+      }
+  instances: 1
+  memory: 1G
+  routes:
+  - route: ttc-fiori-rsd-dev-cpapp-srv.cfapps.sap.hana.ondemand.com
+  services:
+  - cpapp-uaa
+  - cpapp-logs
+  - cpapp-db
+  - cpapp-connectivity
+  - cpappems
+  - cpapp-destination
+  stack: cflinuxfs3

@@ -7,6 +7,8 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^4",
+    "@sap/cloud-sdk-vdm-business-partner-service": "^1.23.0",
+    "@sap/xb-msg-amqp-v100": "^0.9.48",
     "@sap/xsenv": "^3.1.0",
     "@sap/xssec": "^3.1.1",
     "express": "^4",
@@ -28,6 +30,12 @@
       "uaa": {
         "kind": "xsuaa",
         "credentials": {}
+      },
+      "messaging": {
+        "kind": "local-messaging",
+        "[production]": {
+          "kind": "enterprise-messaging"
+        }
       },
       "API_BUSINESS_PARTNER": {
         "kind": "odata",

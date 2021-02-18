@@ -44,6 +44,13 @@
       "role-template-references": [
         "$XSAPPNAME.RiskViewer"
       ]
+    },
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": [
+        "uaa.user"
+      ]
     }
   ]
 }

@@ -22,11 +22,13 @@ using { managed } from '@sap/cds/common';
 
   //using an external service from S/4HANA Cloud
   using {  API_BUSINESS_PARTNER as external } from '../srv/external/API_BUSINESS_PARTNER.csn';
-
+    @cds.persistence:{table,skip:false}
+  @cds.autoexpose
   entity BusinessPartners as projection on external.A_BusinessPartner {
-    key BusinessPartner,
+    key BusinessPartner as ID,
     LastName,
     FirstName,
-    BusinessPartnerFullName,
-    BusinessPartnerIsBlocked
+    BusinessPartnerFullName as businessPartnerFullName,
+      BusinessPartnerIsBlocked as businessPartnerIsBlocked,
+      SearchTerm1 as searchTerm1
   }

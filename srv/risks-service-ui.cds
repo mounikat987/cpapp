@@ -3,10 +3,10 @@ using RiskService from './risk-service';
 annotate RiskService.Risks with {
 	title       @title: 'Title';
 	prio        @title: 'Priority';
-	descr       @title: 'Description';   
-	miti        @title: 'Mitigation'; 
-	bp          @title: 'Business Partner';   
-	impact      @title: 'Impact'; 
+	descr       @title: 'Description';
+	miti        @title: 'Mitigation';
+	impact      @title: 'Impact';
+    bp          @title: 'Business Partner';
 }
 
 annotate RiskService.Mitigations with {
@@ -15,11 +15,11 @@ annotate RiskService.Mitigations with {
 		Common: {
 		Text: description
 		}
-	);    
-	description  @title: 'Description';   
-	owner        @title: 'Owner'; 
-	timeline     @title: 'Timeline';   
-	risks        @title: 'Risks'; 
+	);
+	description  @title: 'Description';
+	owner        @title: 'Owner';
+	timeline     @title: 'Timeline';
+	risks        @title: 'Risks';
 }
 
 annotate RiskService.Risks with @(
@@ -32,10 +32,10 @@ annotate RiskService.Risks with @(
 		LineItem: [
 			{Value: title},
 			{Value: miti_ID},
-			{Value: bp_BusinessPartner},
+			{Value: bp.businessPartnerFullName},
 			{
 				Value: prio,
-				Criticality: criticality 
+				Criticality: criticality
 			},
 			{
 				Value: impact,
@@ -54,20 +54,32 @@ annotate RiskService.Risks with @(
 					Value: prio,
 					Criticality: criticality
 				},
-				{Value: bp_BusinessPartner},
-				{
+                {
 					Value: impact,
 					Criticality: criticality
-				}			
+				},
+				{Value: bp_ID},
+                {Value : bp.businessPartnerFullName},
+                {Value : bp.businessPartnerIsBlocked},
+                {Value : bp.searchTerm1}
 			]
-		}		
+		}
 	},
+    Common.SideEffects : {
+        EffectTypes      : #ValueChange,
+        SourceProperties : [bp_ID],
+        TargetProperties : [
+            bp.businessPartnerFullName,
+            bp.businessPartnerIsBlocked,
+            bp.searchTerm1
+        ]
+    }
 ) {
 
-}; 
+};
 
 annotate RiskService.Risks with {
-	miti @(	
+	miti @(
 		Common: {
 			//show text, not id for mitigation in the context of risks
 			Text: miti.description  , TextArrangement: #TextOnly,
@@ -75,49 +87,54 @@ annotate RiskService.Risks with {
 				Label: 'Mitigations',
 				CollectionPath: 'Mitigations',
 				Parameters: [
-					{ $Type: 'Common.ValueListParameterInOut', 
-						LocalDataProperty: miti_ID, 
-						ValueListProperty: 'ID' 
+					{ $Type: 'Common.ValueListParameterInOut',
+						LocalDataProperty: miti_ID,
+						ValueListProperty: 'ID'
 					},
-					{ $Type: 'Common.ValueListParameterDisplayOnly', 
-						ValueListProperty: 'description' 
-					}                                      
+					{ $Type: 'Common.ValueListParameterDisplayOnly',
+						ValueListProperty: 'description'
+					}
 				]
 			}
 		},
 		UI.MultiLineText: IsActiveEntity
 	);
-	bp @(	
+	bp @(
 		Common: {
-			Text: bp.LastName  , TextArrangement: #TextOnly,
+			Text: bp.ID  , TextArrangement: #TextOnly,
 			ValueList: {
 				Label: 'Business Partners',
 				CollectionPath: 'BusinessPartners',
 				Parameters: [
-					{ $Type: 'Common.ValueListParameterInOut', 
-						LocalDataProperty: bp_BusinessPartner, 
-						ValueListProperty: 'BusinessPartner' 
+					{ $Type: 'Common.ValueListParameterInOut',
+						LocalDataProperty: bp_ID,
+						ValueListProperty: 'ID'
 					},
-					{ $Type: 'Common.ValueListParameterDisplayOnly', 
-						ValueListProperty: 'LastName' 
+					{ $Type: 'Common.ValueListParameterDisplayOnly',
+						ValueListProperty: 'businessPartnerFullName'
 					},
-					{ $Type: 'Common.ValueListParameterDisplayOnly', 
-						ValueListProperty: 'FirstName' 
-					}      					                                   
+					{ $Type: 'Common.ValueListParameterDisplayOnly',
+						ValueListProperty: 'businessPartnerIsBlocked'
+					},
+                    { $Type: 'Common.ValueListParameterDisplayOnly',
+						ValueListProperty: 'searchTerm1'
+					}
 				]
 			}
 		}
-	)	
+	);
 }
 
 
   annotate RiskService.BusinessPartners with {
-    BusinessPartner @(
-      UI.Hidden,
-      Common: {
-        Text: LastName
-      }
-    );   
-    LastName    @title: 'Last Name';  
-    FirstName   @title: 'First Name';   
+    // ID @(
+    //   UI.Hidden,
+    //   Common: {
+    //     Text: businessPartnerFullName
+    //   }
+    // );
+    ID @title: 'Business Partner';
+    businessPartnerFullName    @title: 'Business Partner Name' @readonly;
+    businessPartnerIsBlocked   @title: 'Blocked Status' @readonly;
+    searchTerm1 @title: 'Search Term' @readonly;
   }
