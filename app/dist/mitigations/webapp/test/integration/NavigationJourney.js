@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/opaQunit","./pages/App"],function(e){"use strict";QUnit.module("Navigation");e("Should see the app view",function(e,p,i){e.iStartMyApp();i.onTheAppPage.iShouldSeeTheApp();i.iTeardownMyApp()})});

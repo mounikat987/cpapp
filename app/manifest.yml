@@ -1,0 +1,15 @@
+applications:
+  - name: cpapp-app
+    path: ./
+    memory: 128M
+    buildpacks:
+      - nodejs_buildpack
+    env:
+      destinations: >
+        [
+          {"name":"backend","url":"https://cpapp-srv-TTC_FIORI_rsd-dev-app.cfapps.sap.hana.ondemand.com","forwardAuthToken":true}
+        ]
+    routes:
+      - route: cpapp-app-TTC_FIORI_rsd-dev.cfapps.sap.hana.ondemand.com
+    services:
+      - xsuaa_for_cpapp

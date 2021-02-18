@@ -1,0 +1,20 @@
+{
+  "welcomeFile": "./launchpage.html",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/service/(.*)$",
+      "destination": "backend",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "/$1",
+      "localDir": ".",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

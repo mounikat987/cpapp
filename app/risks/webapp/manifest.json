@@ -23,7 +23,19 @@
         "sourceTemplate": {
             "id": "ui5template.fiorielements.v4.lrop",
             "version": "1.0.0"
+        },
+        "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "Risks",
+          "action": "display"
         }
+      }
+    }
     },
     "sap.ui": {
         "technology": "UI5",
@@ -47,7 +59,7 @@
             "css": []
         },
         "dependencies": {
-            "minUI5Version": "1.76.0",
+           "minUI5Version": "1.75.0",
             "libs": {
                 "sap.ui.core": {},
                 "sap.fe.templates": {}

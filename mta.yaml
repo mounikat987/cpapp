@@ -1,0 +1,149 @@
+## Generated mta.yaml based on template version 0.4.0
+## appName = cpapp
+## language=nodejs; multiTenant=false
+## approuter=
+_schema-version: '3.1'
+ID: cpapp
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+   
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm install --production
+      - bash -c "cds -v 2>/dev/null >/dev/null || npm install --no-save @sap/cds-dk"
+      - npx -p @sap/cds-dk cds build --production
+
+modules:
+ # --------------------- SERVER MODULE ------------------------
+ - name: cpapp-srv
+ # ------------------------------------------------------------
+   type: nodejs
+   path: gen/srv
+   requires:
+    # Resources extracted from CAP configuration
+    - name: cpapp-db
+    - name: cpapp-uaa
+    - name: cpapp-destination
+    - name: cpapp-connectivity
+    - name: cpapp-logs
+   provides:
+    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+      properties:
+        srv-url: ${default-url}
+
+ # -------------------- SIDECAR MODULE ------------------------
+ - name: cpapp-db-deployer
+ # ------------------------------------------------------------
+   type: hdb
+   path: gen/db  
+   parameters:
+     buildpack: nodejs_buildpack
+   requires:
+    # 'hana' and 'xsuaa' resources extracted from CAP configuration
+    - name: cpapp-db
+    - name: cpapp-uaa
+    - name: cpapp-logs
+
+ - name: cpapp-app
+   type: html5
+   path: app
+   build-parameters:
+      builder: custom
+      commands:
+        - bash build.sh
+      supported-platforms: []
+      build-result: dist
+ - name: cpapp-approuter
+   type: nodejs
+   path: approuter
+   requires:
+      - name: cpapp-uaa
+      - name: cpapp-logs
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          strictSSL: true
+          name: srv-api
+          url: '~{srv-url}'
+   build-parameters:
+      requires:
+        - name: cpapp-app
+          artifacts:
+            - ./*
+          target-path: resources
+
+
+resources:
+ # services extracted from CAP configuration
+ # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# ------------------------------------------------------------
+ - name: cpapp-db
+# ------------------------------------------------------------
+   type: com.sap.xs.hdi-container
+   parameters:
+     service: hana  # or 'hanatrial' on trial landscapes
+     service-plan: hdi-shared
+   properties:
+     hdi-service-name: ${service-name}
+# ------------------------------------------------------------
+ - name: cpapp-uaa
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service: xsuaa
+     service-plan: application
+     path: ./xs-security.json  
+     config:
+       xsappname: cpapp-${space}
+       role-collections:
+          - name: 'RiskManager-${space}'
+            description: Manage Risks
+            role-template-references:
+              - $XSAPPNAME.RiskManager
+          - name: 'RiskViewer-${space}'
+            description: View Risks
+            role-template-references:
+              - $XSAPPNAME.RiskViewer
+       tenant-mode: dedicated
+
+ - name: cpapp-destination
+   type: org.cloudfoundry.managed-service
+   parameters:
+      service: destination
+      service-plan: lite
+ - name: cpapp-connectivity
+   parameters:
+     service: connectivity
+     service-plan: lite
+   type: org.cloudfoundry.managed-service
+ - name: cpapp-logs
+   type: org.cloudfoundry.managed-service
+   parameters:
+    service: application-logs
+    service-plan: standard
+
+ - name: cpapp-portal
+   type: org.cloudfoundry.managed-service
+   parameters:
+      service-plan: standard
+      service: portal
+
+ - name: cpapp-html5-repo-runtime
+   type: org.cloudfoundry.managed-service
+   parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+
+ - name: cpapp-html5-repo-host
+   type: org.cloudfoundry.managed-service
+   parameters:
+      service-plan: app-host
+      service: html5-apps-repo
+
+
+

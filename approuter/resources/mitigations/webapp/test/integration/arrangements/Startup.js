@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/Opa5"],function(t){"use strict";return t.extend("ns.mitigations.test.integration.arrangements.Startup",{iStartMyApp:function(t){var a=t||{};a.delay=a.delay||1;this.iStartMyUIComponent({componentConfig:{name:"ns.mitigations",async:true},hash:a.hash,autoWait:a.autoWait})}})});

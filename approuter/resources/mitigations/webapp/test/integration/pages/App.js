@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/Opa5"],function(e){"use strict";var i="App",s="app";e.createPageObjects({onTheAppPage:{actions:{},assertions:{iShouldSeeTheApp:function(){return this.waitFor({id:s,viewName:i,success:function(){e.assert.ok(true,"The App view is displayed")},errorMessage:"Did not find the App view"})}}}})});

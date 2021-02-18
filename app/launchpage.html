@@ -10,14 +10,22 @@
             window['sap-ushell-config'] = {
                 defaultRenderer: 'fiori2',
                 applications: {
-                    'fe-lrop-v4': {
+                    "risks-app": {
                         title: 'Risks',
                         description: 'risks',
                         additionalInformation: 'SAPUI5.Component=ns.risks',
                         applicationType: 'URL',
-                        url: './',
+                        url: "./risks/webapp",
                         navigationMode: 'embedded'
-                    }
+                    },
+                    "mitigations-app": {
+                title: "Mitigations",
+                description: "Mitigations",
+                additionalInformation: "SAPUI5.Component=ns.mitigations",
+                applicationType: "URL",
+                url: "./mitigations/webapp",
+                navigationMode: "embedded"
+            }
                 }
             };
         </script>
