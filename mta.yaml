@@ -18,7 +18,7 @@ build-parameters:
       - bash -c "cds -v 2>/dev/null >/dev/null || npm install --no-save @sap/cds-dk"
       - npx -p @sap/cds-dk cds build --production
       - mkdir gen/ui-resources
-      - bash -c 'find gen -type f \( -name '*.csv' -or -name '*.hdbtabledata' \) | xargs rm -f'
+      #- bash -c 'find gen -type f \( -name '*.csv' -or -name '*.hdbtabledata' \) | xargs rm -f'
 
 
 modules:
