@@ -1,6 +1,6 @@
 {
   "xsappname": "cpapp",
-  "tenant-mode": "dedicated",
+  "tenant-mode": "shared",
   "scopes": [
     {
       "name": "$XSAPPNAME.RiskViewer",
@@ -9,6 +9,17 @@
     {
       "name": "$XSAPPNAME.RiskManager",
       "description": "RiskManager"
+    },
+    {
+      "name": "$XSAPPNAME.Callback",
+      "description": "With this scope set, the callbacks for subscribe, unsubscribe and getDependencies can be called.",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+      ]
+    },
+    {
+      "name": "uaa.user",
+      "description": "UAA"
     }
   ],
   "attributes": [],
