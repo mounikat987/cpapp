@@ -1,0 +1,33 @@
+---
+applications:
+- name: cpapp-srv
+  env:
+    DEPLOY_ATTRIBUTES: |-
+      {
+        "app-content-digest" : "F034C3B054CC4E7B535FDD570C68E93E"
+      }
+  buildpacks:
+  - nodejs_buildpack
+  stack: cflinuxfs3
+  services:
+  - cpapp-db
+  - cpapp-ems
+  - cpapp-uaa
+  routes:
+  - route: engsrv-e2e-riskmgmt-cw40-mr-2-shssw3l1-dev-cpapp-srv.cfapps.sap.hana.ondemand.com
+    protocol: http1
+  metadata:
+    labels:
+      mta_id: 16e74a57407fb040d8344e2361959689
+    annotations:
+      mta_id: cpapp
+      mta_version: 1.0.0
+      mta_module: '{"name":"cpapp-srv"}'
+      mta_bound_services: '["cpapp-db","cpapp-uaa","cpapp-ems"]'
+      mta_module_provided_dependencies: "[]"
+  processes:
+  - type: web
+    instances: 1
+    memory: 1024M
+    disk_quota: 1024M
+    health-check-type: port
